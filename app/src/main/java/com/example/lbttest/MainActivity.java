@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private String TAG = "LBTEST";
     public LocationClient mLocationClient;
     private TextView positionText;
     private MapView mapView;
@@ -61,18 +62,21 @@ public class MainActivity extends AppCompatActivity {
             requestLocation();
             Toast.makeText(this, "定位成功", Toast.LENGTH_SHORT).show();
         }
+        LogUtil.d(TAG,"初始化操作完成");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         mapView.onResume();
+        LogUtil.d(TAG,"重新启动");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mapView.onPause();
+        LogUtil.d(TAG,"资源释放");
     }
 
     @Override
@@ -81,6 +85,20 @@ public class MainActivity extends AppCompatActivity {
         mLocationClient.stop();
         mapView.onDestroy();
         baiduMap.setMyLocationEnabled(false);
+        LogUtil.d(TAG,"销毁");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LogUtil.d(TAG, "活动由不可见变为可见");
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LogUtil.d(TAG,"活动完全不可见");
     }
 
     private void requestLocation(){
